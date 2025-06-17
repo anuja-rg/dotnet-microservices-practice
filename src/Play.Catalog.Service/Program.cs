@@ -16,7 +16,7 @@ builder.Services.AddScoped<IItemRepository, ItemsRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddValidatorsFromAssemblyContaining<>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateItemCommandValidator>();
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 

@@ -23,7 +23,7 @@ namespace Play.Catalog.Service.Validators
                 }
             }
 
-            return await next();
+            return await next(cancellationToken);
         }
     }
 }
