@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Play.Catalog.Service;
 using Play.Catalog.Service.Repositories;
 using FluentValidation;
+using MediatR;
+using Play.Catalog.Service.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,9 @@ builder.Services.AddScoped<IItemRepository, ItemsRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+//builder.Services.AddValidatorsFromAssemblyContaining<>();
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
