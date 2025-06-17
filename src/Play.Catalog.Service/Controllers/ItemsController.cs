@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
 
 namespace Play.Catalog.Service.Controllers
 {
