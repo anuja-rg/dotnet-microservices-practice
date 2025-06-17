@@ -50,41 +50,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatedItemDto"
+                "$ref": "#/components/schemas/CreateItemCommand"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatedItemDto"
+                "$ref": "#/components/schemas/CreateItemCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatedItemDto"
+                "$ref": "#/components/schemas/CreateItemCommand"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemDto"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -193,7 +176,7 @@
   },
   "components": {
     "schemas": {
-      "CreatedItemDto": {
+      "CreateItemCommand": {
         "type": "object",
         "properties": {
           "name": {

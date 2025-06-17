@@ -4,6 +4,7 @@ using Play.Catalog.Service.Repositories;
 using FluentValidation;
 using MediatR;
 using Play.Catalog.Service.Validators;
+using Play.Catalog.Service.Requests.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IItemRepository, ItemsRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateItemCommandHandler).Assembly));
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateItemCommandValidator>();
 

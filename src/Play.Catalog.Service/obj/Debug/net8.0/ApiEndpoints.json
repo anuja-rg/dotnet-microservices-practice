@@ -28,22 +28,12 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "createdItemDto",
-        "Type": "Play.Catalog.Service.CreatedItemDto",
+        "Name": "command",
+        "Type": "Play.Catalog.Service.Requests.Commands.CreateItemCommand",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "Play.Catalog.Service.ItemDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "Play.Catalog.Service.Controllers.ItemsController",

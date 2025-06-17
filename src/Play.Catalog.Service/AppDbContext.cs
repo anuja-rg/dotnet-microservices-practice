@@ -8,6 +8,9 @@ namespace Play.Catalog.Service
         public DbSet<Item> Items => Set<Item>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Item>()
+                .Property(i => i.Price)
+                .HasPrecision(18, 2);
             modelBuilder.Entity<Item>().HasData(
      new Item { Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), Name = "Item 1", Description = "Description for Item 1", Price = 10.8M, CreatedDate = DateTimeOffset.Parse("2024-01-01T00:00:00Z") },
      new Item { Id = Guid.Parse("22222222-2222-2222-2222-222222222222"), Name = "Item 2", Description = "Description for Item 2", Price = 15.5M, CreatedDate = DateTimeOffset.Parse("2024-01-02T00:00:00Z") },

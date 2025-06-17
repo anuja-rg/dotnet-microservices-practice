@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using System.Threading.Tasks;
+using Play.Catalog.Service.Requests.Commands;
 
 namespace Play.Catalog.Service.Controllers
 {
     [ApiController]
     [Route("items")]
-    public class ItemsController : ControllerBase
+    public class ItemsController(IMediator mediator) : ControllerBase
     {
+        private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator), "Mediator cannot be null.");
+
         private static readonly List<ItemDto> items =
         [
                 new ItemDto(Guid.NewGuid(), "Item 1", "Description for Item 1", 10, DateTimeOffset.UtcNow),
@@ -32,11 +36,13 @@ namespace Play.Catalog.Service.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ItemDto> Post(CreatedItemDto createdItemDto)
+        public async Task<ActionResult> Post([FromBody] CreateItemCommand command)
         {
-            var item = new ItemDto(Guid.NewGuid(), createdItemDto.Name, createdItemDto.Description, createdItemDto.Price, DateTimeOffset.UtcNow);
-            items.Add(item);
-            return CreatedAtAction(nameof(GetById), new {id = item.Id}, item);
+            //var item = new ItemDto(Guid.NewGuid(), createdItemDto.Name, createdItemDto.Description, createdItemDto.Price, DateTimeOffset.UtcNow);
+            //items.Add(item);
+            //return CreatedAtAction(nameof(GetById), new {id = item.Id}, item);
+            var createdItem = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { Id = createdItem.Name }, createdItem);
         }
 
         [HttpPut("{Id}")]
