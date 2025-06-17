@@ -2,6 +2,7 @@
 using MediatR;
 using System.Threading.Tasks;
 using Play.Catalog.Service.Requests.Commands;
+using Play.Catalog.Service.Requests.Queries;
 
 namespace Play.Catalog.Service.Controllers
 {
@@ -19,9 +20,17 @@ namespace Play.Catalog.Service.Controllers
         ];
 
         [HttpGet]
-        public IEnumerable<ItemDto> Get()
+        public async Task<IActionResult> Get()
         {
-            return items;
+            var query = new GetAllItemsQuery();
+            var items = await _mediator.Send(query);
+
+            if (items == null || !items.Any())
+            {
+                return NotFound("No items found.");
+            }
+            return Ok(items);
+
         }
 
         [HttpGet("{Id}")]
