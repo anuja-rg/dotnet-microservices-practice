@@ -12,13 +12,6 @@ namespace Play.Catalog.Service.Controllers
     {
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator), "Mediator cannot be null.");
 
-        private static readonly List<ItemDto> items =
-        [
-                new ItemDto(Guid.NewGuid(), "Item 1", "Description for Item 1", 10, DateTimeOffset.UtcNow),
-                new ItemDto(Guid.NewGuid(), "Item 2", "Description for Item 2", 7, DateTimeOffset.UtcNow),
-                new ItemDto(Guid.NewGuid(), "Item 3", "Description for Item 3", 5, DateTimeOffset.UtcNow)
-        ];
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -36,12 +29,18 @@ namespace Play.Catalog.Service.Controllers
         [HttpGet("{Id}")]
         public ActionResult<ItemDto> GetById(Guid Id)
         {
-            var item = items.FirstOrDefault(item => item.Id == Id);
-            if (item == null)
+            var item = new GetItemByIdQuery(Id);
+
+            try
             {
-                return NotFound();
+                var itemDto = _mediator.Send(item);
+                return Ok(itemDto.Result);
             }
-            return item;
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+           
         }
 
         [HttpPost]
@@ -53,21 +52,7 @@ namespace Play.Catalog.Service.Controllers
 
         [HttpPut("{Id}")]
         public IActionResult Put(Guid Id, UpdateItemDto updateItemDto) { 
-            var existingItem = items.Where(item =>  item.Id == Id).FirstOrDefault();
-            if (existingItem == null)
-            {
-                return NotFound();
-            }
-
-            var updatedItem = existingItem with
-            {
-                Name = updateItemDto.Name,
-                Description = updateItemDto.Description,
-                Price = updateItemDto.Price
-            };
-
-            var index = items.FindIndex(item => item.Id == Id);
-            items[index] = updatedItem;
+            
             return NoContent();
         }
 
