@@ -14,15 +14,16 @@ namespace Play.Catalog.Service.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var entity = await _context.Set<T>().FindAsync(id);
             if (entity == null)
             {
                 return false;
             }
-            _context.Set<T>().Remove(entity);
-            return await _context.SaveChangesAsync().ContinueWith(t => t.Result > 0);
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -30,7 +31,7 @@ namespace Play.Catalog.Service.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(Guid id)
         {
             return await _context.Set<T>().FindAsync(id);
         }

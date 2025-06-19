@@ -47,9 +47,6 @@ namespace Play.Catalog.Service.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CreateItemCommand command)
         {
-            //var item = new ItemDto(Guid.NewGuid(), createdItemDto.Name, createdItemDto.Description, createdItemDto.Price, DateTimeOffset.UtcNow);
-            //items.Add(item);
-            //return CreatedAtAction(nameof(GetById), new {id = item.Id}, item);
             var createdItem = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new { Id = createdItem.Name }, createdItem);
         }
@@ -75,14 +72,17 @@ namespace Play.Catalog.Service.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public IActionResult Delete(Guid Id) { 
-            var index = items.FindIndex(item => item.Id == Id);
-            if (index < 0)
+        public async Task<IActionResult> Delete(Guid Id)
+        {
+            var result = await _mediator.Send(new DeleteItemCommand(Id));
+            if (result)
+            {
+                return NoContent();
+            }
+            else
             {
                 return NotFound();
             }
-            items.RemoveAt(index);
-            return NoContent();
         }
     }
 }
