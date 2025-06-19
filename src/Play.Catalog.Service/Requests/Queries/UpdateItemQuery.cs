@@ -2,7 +2,7 @@
 
 namespace Play.Catalog.Service.Requests.Queries
 {
-    public record UpdateItemQuery : IRequest<ItemDtoOut>
+    public record UpdateItemQuery(Guid Id, UpdateItemDto UpdateItemDto) : IRequest<ItemDtoOut>
     {
     }
 }

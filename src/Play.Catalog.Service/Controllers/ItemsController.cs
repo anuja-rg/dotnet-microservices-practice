@@ -51,9 +51,18 @@ namespace Play.Catalog.Service.Controllers
         }
 
         [HttpPut("{Id}")]
-        public IActionResult Put(Guid Id, UpdateItemDto updateItemDto) { 
+        public IActionResult Put(Guid Id, [FromBody] UpdateItemDto updateItemDto) { 
             
-            return NoContent();
+            var updatedItem = new UpdateItemQuery(Id, updateItemDto);
+            try
+            {
+                var itemDto = _mediator.Send(updatedItem);
+                return Ok(itemDto.Result);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{Id}")]
