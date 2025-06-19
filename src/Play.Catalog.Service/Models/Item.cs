@@ -2,7 +2,7 @@
 
 namespace Play.Catalog.Service.Models
 {
-    public class Item
+    public class Item : IEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public required string Name { get; set; }

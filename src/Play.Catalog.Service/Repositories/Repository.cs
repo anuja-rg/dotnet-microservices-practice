@@ -1,12 +1,13 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Play.Catalog.Service.Models;
 
 namespace Play.Catalog.Service.Repositories
 {
-    public class Repository<T>(AppDbContext context) : IRepository<T> where T : class
+    public class Repository<T>(AppDbContext context) : IRepository<T> where T : class, IEntity
     {
-
         protected readonly AppDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+
         public async Task<T?> AddAsync(T entity)
         {
             _context.Set<T>().Add(entity);
